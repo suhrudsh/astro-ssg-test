@@ -5,7 +5,7 @@ import PostCard from "../components/PostCard.astro";
 import "../styles/global.css";
 
 const posts = await sanityClient.fetch(`
-  *[_type == "post"] | order(_createdAt desc)[0...3]{
+  *[_type == "post"] | order(_createdAt desc){
     _id,
     title,
     "slug": slug.current,
