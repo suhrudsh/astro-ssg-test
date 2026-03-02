@@ -1,0 +1,15 @@
+---
+const { post } = Astro.props;
+---
+
+<li class="rounded-2xl border border-zinc-300 bg-white p-4 hover:bg-zinc-200">
+  <h2 class="m-0 text-[1.1rem] leading-tight font-semibold">{post.title}</h2>
+  <p class="mt-2 text-sm text-zinc-600">
+    {new Date(post._createdAt).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })}
+  </p>
+  {post.slug && <p class="mt-2 font-mono text-sm text-zinc-600">/{post.slug}</p>}
+</li>

@@ -1,11 +1,41 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { sanityClient } from "sanity:client";
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import "../styles/global.css";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = await sanityClient.fetch(`
+  *[_type == "post"] | order(_createdAt desc)[0...3]{
+    _id,
+    title,
+    "slug": slug.current,
+    _createdAt
+  }
+`);
 ---
 
 <Layout>
-	<Welcome />
+  <main class="mx-auto max-w-5xl px-4 pt-8 pb-12">
+    <header class="mb-6">
+      <p class="m-0 text-sm uppercase tracking-[0.08em] text-zinc-600">Sanity + Astro</p>
+      <h1 class="mt-1 mb-2 text-[clamp(1.8rem,2.6vw,2.8rem)] leading-[1.1] font-semibold">
+        Latest posts
+      </h1>
+      <p class="m-0 text-zinc-700">Pulled from Sanity and rendered directly on the homepage.</p>
+    </header>
+
+    {
+      posts.length === 0 ? (
+        <p class="mt-6 rounded-xl border border-zinc-300 bg-zinc-50 p-4">
+          No posts yet. Add one in Sanity Studio and refresh.
+        </p>
+      ) : (
+        <ul class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 p-0">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </ul>
+      )
+    }
+  </main>
 </Layout>
