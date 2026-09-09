@@ -1,0 +1,11 @@
+---
+import { urlFor } from "../../sanity/lib/image";
+
+const { images = [], columns = 3 } = Astro.props.node;
+const colsClass = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4" }[columns] ?? "sm:grid-cols-3";
+---
+<div class={` grid grid-cols-1 gap-4 ${colsClass}`}>
+  {images.map((img) => (
+    <img src={urlFor(img).width(600).url()} alt="" class="w-full not-prose object-cover aspect-video rounded-xl" />
+  ))}
+</div>

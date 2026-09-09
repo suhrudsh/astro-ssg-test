@@ -1,0 +1,20 @@
+---
+// blocks/TwoColumnLayout.astro
+import { PortableText } from "astro-portabletext";
+import { urlFor } from "../../sanity/lib/image";
+
+const { text, image, imagePosition } = Astro.props.node;
+const imageFirst = imagePosition === "left";
+---
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 ">
+  <div class={`prose prose-zinc prose-p:my-2 ${imageFirst ? "sm:order-2" : ""}`}>
+    <PortableText value={text} />
+  </div>
+  {image && (
+    <img
+      src={urlFor(image).width(800).url()}
+      alt=""
+      class={`w-full rounded-xl not-prose aspect-video object-cover h-full ${imageFirst ? "sm:order-1" : ""}`}
+    />
+  )}
+</div>

@@ -1,0 +1,51 @@
+---
+import { sanityClient } from "sanity:client";
+import { PortableText } from "astro-portabletext";
+import Layout from "../../layouts/Layout.astro";
+import ThreeColumnGrid from "../../components/blocks/ThreeColumnGrid.astro";
+import TwoColumnLayout from "../../components/blocks/TwoColumnLayout.astro";
+import ImageGallery from "../../components/blocks/ImageGallery.astro";
+import "../../styles/global.css";
+
+export async function getStaticPaths() {
+  const posts = await sanityClient.fetch(`*[_type == "post"]{ "slug": slug.current }`);
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+
+const post = await sanityClient.fetch(
+  `*[_type == "post" && slug.current == $slug][0]{
+    _id,
+    title,
+    "slug": slug.current,
+    _createdAt,
+    content[]{
+      ...,
+      _type == "image" => { ..., asset-> },
+      _type == "threeColumnGrid" => { ..., image1{ asset-> }, image2{ asset-> }, image3{ asset-> } },
+      _type == "twoColumnLayout" => { ..., image{ asset-> } },
+      _type == "imageGallery" => { ..., images[]{ asset-> } }
+    }
+  }`,
+  { slug }
+);
+
+const components = {
+  type: {
+    threeColumnGrid: ThreeColumnGrid,
+    twoColumnLayout: TwoColumnLayout,
+    imageGallery: ImageGallery,
+  },
+};
+---
+<Layout>
+  <main class="mx-auto max-w-3xl px-4 pt-8 pb-12">
+    <h1 class="mt-1 mb-6 text-[clamp(1.8rem,2.6vw,2.8rem)] leading-[1.1] font-semibold">
+      {post.title}
+    </h1>
+    <div class="prose prose-zinc max-w-none">
+        <PortableText value={post.content} components={components} />
+    </div>
+  </main>
+</Layout>
