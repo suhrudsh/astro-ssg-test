@@ -3,8 +3,8 @@ import { urlFor } from "../../sanity/lib/image";
 
 const { image1, image2, image3 } = Astro.props.node;
 ---
-<div class="my-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-  {image1 && <img src={urlFor(image1).width(600).url()} alt="" class="not-prose rounded-xl aspect-video object-cover h-64" />}
-  {image2 && <img src={urlFor(image2).width(600).url()} alt="" class=" not-prose rounded-xl aspect-video object-cover h-64" />}
-  {image3 && <img src={urlFor(image3).width(600).url()} alt="" class=" not-prose rounded-xl aspect-video object-cover h-64" />}
+<div class="grid grid-cols-1 gap-4 w-full sm:grid-cols-3">
+  {image1 && <img src={urlFor(image1).width(600).url()} alt="" class="not-prose rounded-xl aspect-video object-cover w-full" />}
+  {image2 && <img src={urlFor(image2).width(600).url()} alt="" class=" not-prose rounded-xl aspect-video object-cover w-full" />}
+  {image3 && <img src={urlFor(image3).width(600).url()} alt="" class=" not-prose rounded-xl aspect-video object-cover w-full" />}
 </div>

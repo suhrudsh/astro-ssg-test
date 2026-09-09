@@ -15,7 +15,12 @@ export default defineType({
         },
       ],
     },
-    { name: "image", title: "Image", type: "image" },
+    {
+      name: "image",
+      title: "Image",
+      type: "image",
+      options: { hotspot: true },
+    },
     {
       name: "imagePosition",
       title: "Image Position",
@@ -24,4 +29,14 @@ export default defineType({
       initialValue: "right",
     },
   ],
+  preview: {
+    select: { media: "image", side: "imagePosition" },
+    prepare({ media, side }) {
+      return {
+        title: "Two Column Layout Block",
+        subtitle: `Image on ${side} side`,
+        media,
+      };
+    },
+  },
 });

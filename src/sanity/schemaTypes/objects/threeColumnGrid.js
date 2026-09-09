@@ -9,4 +9,10 @@ export default defineType({
     { name: "image2", title: "Image 2", type: "image" },
     { name: "image3", title: "Image 3", type: "image" },
   ],
+  preview: {
+    select: { media: "image1" },
+    prepare({ media }) {
+      return { title: "Three Column Grid Block", media };
+    },
+  },
 });

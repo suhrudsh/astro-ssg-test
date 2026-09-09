@@ -20,4 +20,14 @@ export default defineType({
       validation: (Rule) => Rule.min(1).max(12), // variable count, with sane bounds
     },
   ],
+  preview: {
+    select: { columns: "columns", count: "images.length", media: "images.0" },
+    prepare({ columns, count, media }) {
+      return {
+        title: `Image Gallery Block - ${columns ?? "?"} columns`,
+        subtitle: `${count ?? 0} images`,
+        media,
+      };
+    },
+  },
 });
